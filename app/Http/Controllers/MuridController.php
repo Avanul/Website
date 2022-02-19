@@ -6,6 +6,7 @@ use App\Models\Murid;
 use App\Models\Kontingen;
 use App\Models\Tingkat;
 use App\Models\User;
+use App\Imports\MuridImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\File;
@@ -13,10 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-
-
-
-
+use Maatwebsite\Excel\Facades\Excel;
 
 class MuridController extends Controller
 {
@@ -32,6 +30,19 @@ class MuridController extends Controller
             'murid' =>  Murid::latest()->get()
         ];
         return view('admin.murid.murid', $data);
+    }
+
+    public function muridimportexcel(Request $request)
+    {
+        $file = $request->file('file');
+        $namaFile = $file->getClientOriginalName();
+        $file->move('DataMurid', $namaFile);
+
+
+        Excel::import(new MuridImport, public_path('/DataMurid/' . $namaFile));
+
+        // return redirect('/murid');
+        dd($request->all());
     }
 
     public function detail($id, $slug)
@@ -56,8 +67,6 @@ class MuridController extends Controller
     }
     public function store(Request $request)
     {
-
-
         $rules = [
             'nik' => 'required',
             'nama' => 'required|unique:murids',
@@ -88,10 +97,12 @@ class MuridController extends Controller
         ];
         $this->validate($request, $rules, $message);
 
+        //Input Foto
         $filename = $request->foto->getClientOriginalName();
         $request->file('foto')->move('fotomurid/', $request->file('foto')->getClientOriginalName());
         $request->foto = $request->file('foto')->getClientOriginalName();
 
+        //Membuat IDMurid Otomatis
         $murid = Murid::where('id')->get();
         $nubRow = count($murid) + 1;
         if ($nubRow < 10) {
@@ -102,6 +113,7 @@ class MuridController extends Controller
             $mrd_id = 'PNSA' . '-' . date('Y') . $nubRow;
         }
 
+        //Import ke table User
         $user = new User;
         $user->role = 'murid';
         $user->name = $request->nama;
@@ -110,7 +122,7 @@ class MuridController extends Controller
         $user->remember_token = str::random(50);
         $user->save();
 
-        // $request->request->add(['user_id' -> $user->id]);
+
         Murid::create(
             [
                 'user_id' => $user->id,
@@ -127,8 +139,6 @@ class MuridController extends Controller
                 'foto' => $request->foto
             ]
         );
-
-
 
         Alert::success('Success', 'Data Berhasil Di Tambah :)');
         toastr()->success('Data Berhasil Ditambah ');

@@ -7,14 +7,8 @@
         <div class="card-header">
             <h3 class="card-title"> {{$title}}</h3>
             <div class="card-tools">
-                <a type="button" class="btn btn-outline-light btn-sm mr-2" data-toggle="modal"
-                    data-target="#exampleModal"><i class="fas fa-plus"></i>
-                    Import XLS
-                </a>
-                <a href="/murid/add_murid" type="button" class="btn btn-outline-light btn-sm mr-2"><i
-                        class="fas fa-plus"></i>
-                    Add
-                </a>
+                <a href="/add_pelatih" type="button" class="btn btn-outline-light btn-sm"><i class="fas fa-plus"></i>
+                    add</a>
             </div>
             <!-- /.card-tools -->
         </div>
@@ -24,9 +18,8 @@
                 <thead>
                     <tr align="center">
                         <th>No</th>
-                        <th>ID Murid</th>
-                        <th>Nama Murid</th>
-                        <th>Rayon</th>
+                        <th>ID Pelatih</th>
+                        <th>Nama Lengkap</th>
                         <th>Alamat</th>
                         <th>TTL</th>
                         <th>Tingkat Sabuk</th>
@@ -34,25 +27,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($murid as $no => $m)
+                    @foreach($pelatih as $no => $p)
                     <tr align="center">
                         <th scope="row">{{++$no}}</th>
-                        <td>{{$m->mrd_id}}</td>
+                        <td>{{$p->plth_id}}</td>
                         <td>
-                            <a href="{{route('dtl_murid',[$m->id,Str::slug($m->nama)])}}" style="color: black;">
-                                {{$m->nama}}
+                            <a href="{{route('dtl_murid',[$p->id,Str::slug($p->nama)])}}" style="color: black;">
+                                {{$p->nama}}
                             </a>
                         </td>
-                        <td>{{$m->kontingen->nama_kon}}</td>
-                        <td>{{$m->alamat}}</td>
-                        <td>{{$m->tmpt}}, {{$m->tgl}}</td>
-                        <td>{{$m->tingkat->nama_tgkt}}</td>
+                        <td>{{$p->alamat}}</td>
+                        <td>{{$p->tmpt}}, {{$p->tgl}}</td>
+                        <td>{{$p->tingkat->nama_tgkt}}</td>
                         <td>
-                            <a href="#" class="deleted" data-id="{{$m->id}}" data-nama="{{$m->nama}}" class="">
+                            <a href="#" class="deleted" data-id="{{$p->id}}" data-nama="{{$p->nama}}" class="">
                                 <i class="nav-icon fas fa-trash-alt" style="color: red;"></i>
                             </a>
                             |
-                            <a href="{{route('edit.murid',[$m->id,Str::slug($m->nama)])}}" class="">
+                            <a href="{{route('edit.murid',[$p->id,Str::slug($p->nama)])}}" class="">
                                 <i class="nav-icon fas fa-edit"></i>
                             </a>
                         </td>

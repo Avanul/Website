@@ -5,10 +5,12 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\WebController;
 use App\Http\Controllers\KontingenController;
 use App\Http\Controllers\MuridController;
+use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\TingkatController;
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DataController;
+use App\Http\Controllers\PelatihController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -32,6 +34,7 @@ Route::post('/login', [AuthController::class, 'postlogin'])->name('postlogin');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
+
 Route::group(
     [
         'middleware' => ['auth', 'checkRole:admin']
@@ -40,7 +43,7 @@ Route::group(
 
         Route::get('/kontingen', [KontingenController::class, 'index'])->name('kontingen');
         Route::get('/kontingen/add_kontingen', [KontingenController::class, 'create']);
-        Route::post('/simpan', [KontingenController::class, 'store'])->name('simpan');
+        Route::post('/konti_simpan', [KontingenController::class, 'store'])->name('konti.simpan');
         Route::get('/kontingen/dtl_kontingen/{id}/{slug}', [KontingenController::class, 'detail'])->name('detail');
         Route::get('/delete/{id}', [KontingenController::class, 'hapus'])->name('hapus');
 
@@ -52,8 +55,18 @@ Route::group(
         Route::post('/update_murid/{id}', [MuridController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [MuridController::class, 'hapus'])->name('hapus');
 
+        Route::post('/import_murid', [MuridController::class, 'muridimportexcel'])->name('import.murid');
+
+        Route::get('/ppp', [PembayaranController::class, 'index'])->name('ppp');
+        Route::get('/ppp/add_ppp', [PembayaranController::class, 'create'])->name('add.ppp');
+        Route::post('/ppp/simpan', [PembayaranController::class, 'store'])->name('ppp.simpan');
+
+        Route::get('/pelatih', [PelatihController::class, 'index'])->name('pelatih');
+        Route::get('/add_pelatih', [PelatihController::class, 'create'])->name('add.pelatih');
+        Route::post('/simpan', [PelatihController::class, 'store'])->name('pelatih.simpan');
+
         Route::get('/tingkat', [TingkatController::class, 'index'])->name('tingkat');
-        Route::get('/tingkat/{id}', [TingkatController::class, 'show'])->name('tingkat');
+        Route::get('/tingkat/{id}', [TingkatController::class, 'show'])->name('dtl.tingkat');
     }
 );
 
@@ -68,6 +81,6 @@ Route::group(
         Route::get('/data', [DataController::class, 'data'])->name('data');
 
         Route::get('/account/profil', [AccountController::class, 'profil'])->name('account.profil');
-        Route::post('/account/profil', [AccountController::class, 'update'])->name('account.profil');
+        Route::post('/account/profil', [AccountController::class, 'update'])->name('post.profil');
     }
 );

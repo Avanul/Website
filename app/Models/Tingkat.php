@@ -15,4 +15,8 @@ class Tingkat extends Model
     {
         return $this->hasMany(Murid::class);
     }
+    public function pelatih()
+    {
+        return $this->hasMany(Pelatih::class);
+    }
 }

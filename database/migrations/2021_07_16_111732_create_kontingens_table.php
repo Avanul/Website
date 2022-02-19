@@ -15,6 +15,7 @@ class CreateKontingensTable extends Migration
     {
         Schema::create('kontingens', function (Blueprint $table) {
             $table->id();
+            $table->string('id_plth');
             $table->string('nama_kon');
             $table->timestamps();
         });

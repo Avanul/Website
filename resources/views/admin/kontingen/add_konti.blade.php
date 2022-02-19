@@ -16,7 +16,7 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-            <form method="POST" action="/simpan">
+            <form method="POST" action="/konti_simpan">
                 <div class="row">
                     {{ csrf_field() }}
                     <div class="card-body">
@@ -24,6 +24,19 @@
                             <label for="kontingen">Nama Kontingen</label>
                             <input type="name" class="form-control" id="kontingen" name="nama_kon"
                                 placeholder="Nama Kontingen">
+                        </div>
+                        <div class="form-group">
+                            <label for="plth" class="form-label">Nama Pelatih</label>
+                            <select class="form-control @error('id_plth') is-invalid @enderror"
+                                value="{{old('id_plth')}}" name="id_plth">
+                                <option value="">Pilih Pelatih</option>
+                                @foreach($pelatih as $pel)
+                                <option value="{{ $pel->id }}">{{ $pel->nama }}</option>
+                                @endforeach
+                            </select>
+                            @error('id_plth')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <!-- /.card-body -->

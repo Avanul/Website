@@ -85,7 +85,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- Sidebar -->
             <div class="sidebar">
 
-                @if(auth()->user()->role =='admin')
+                @if(auth()->user()->role == 'admin')
 
                 <!-- Sidebar Menu -->
                 <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
@@ -111,7 +111,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/#" class="nav-link">
+                            <a href="/pelatih" class="nav-link">
                                 <i class="nav-icon fas fa-user-tie"></i>
                                 <p>
                                     Daftar Pelatih
@@ -127,6 +127,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{url('ppp')}}" class="nav-link">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>
+                                    Pembayaran(PPP)
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{url('tingkat')}}" class="nav-link">
                                 <i class="nav-icon fas fa-khanda"></i>
                                 <p>
@@ -135,8 +143,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                         </li>
                     </ul>
-
-                    @endif
 
                     <h6
                         class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
@@ -163,7 +169,65 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                         </li>
                     </ul>
+                    @endif
 
+                    @if(auth()->user()->role =='murid')
+                    <!-- User/Murid -->
+                    <h6
+                        class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        <span>
+                            User Experient
+                        </span>
+                    </h6>
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false">
+                        <li class="nav-item">
+                            <a href="{{'/data'}}" class="nav-link">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>
+                                    Data Pribadi
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{'/card'}}" class="nav-link">
+                                <i class="nav-icon fas fa-id-card"></i>
+                                <p>
+                                    Kartu Tanda Anggota
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                    @endif
+
+                    <!-- SuperAdmin -->
+                    @if(auth()->user()->role =='pelatih')
+                    <h6
+                        class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        <span>
+                            Super Admin
+                        </span>
+                    </h6>
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false">
+                        <li class="nav-item">
+                            <a href="/kontingen" class="nav-link">
+                                <i class="nav-icon fas fa-gopuram"></i>
+                                <p>
+                                    Daftar Rayon
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/pelatih" class="nav-link">
+                                <i class="nav-icon fas fa-user-tie"></i>
+                                <p>
+                                    Daftar Pelatih
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                    @endif
 
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -214,7 +278,35 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- REQUIRED SCRIPTS -->
 
-    <!-- sweetalert -->
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Import Data</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form action="{{ route('import.murid') }}" method="POST" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            {{ csrf_field() }}
+                            <div class="form-group">
+                                <input type="file" name="file">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Selesai</button>
+                        <button type="submit" value="submit" class="btn btn-primary">Import</button>
+                    </div>
+            </div>
+            </form>
+        </div>
+    </div>
 
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
